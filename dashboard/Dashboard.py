@@ -12,5 +12,6 @@ class Dashboard:
             })
 
 	def run(self):
+		st.set_page_config(layout="wide")
 		page = st.sidebar.selectbox('Select Page', self.pages, format_func = lambda x: x['title'])
 		page['function']()
