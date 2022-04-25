@@ -1,5 +1,7 @@
 import streamlit as st
 import pickle
+import pandas as pd
+import numpy as np
 
 def page():
 	st.markdown("<h1 style='text-align: center; color: white;'> Application Form</h1>", unsafe_allow_html=True)
@@ -8,6 +10,8 @@ def page():
 
 	with open('logistic_regression_model.p', 'rb') as f:
 		model = pickle.load(f)
+
+	df = pd.read_csv("heloc_dataset_v1.csv")
 
 	with st.form("Application"):
 		c1, c2 = st.columns(2)
@@ -20,8 +24,8 @@ def page():
 			NumTrades90Ever2DerogPubRec = st.number_input('Number Trades 90+ Ever', step = 1)
 			PercentTradesNeverDelq = st.number_input('Percent Trades Never Delinquent', step = 1)
 			MSinceMostRecentDelq = st.number_input('Months Since Most Recent Delinquency', step = 1)
-			MaxDelq2PublicRecLast12M = st.number_input('Max Delq/Public Records Last 12 Months. See tab "MaxDelq" for each category', step = 1)
-			MaxDelqEver = st.number_input('Max Delinquency Ever. See tab "MaxDelq" for each category', step = 1)
+			MaxDelq2PublicRecLast12M = st.number_input('Max Delq/Public Records Last 12 Months [1]', step = 1)
+			MaxDelqEver = st.number_input('Max Delinquency Ever [2]', step = 1)
 			NumTotalTrades = st.number_input('Number of Total Trades (total number of credit accounts)', step = 1)
 		with c2:
 			NumTradesOpeninLast12M = st.number_input('Number of Trades Open in Last 12 Months', step = 1)
@@ -39,14 +43,47 @@ def page():
 		submit = st.form_submit_button("Submit")
 
 	if submit:
-		prediction = model.predict([[ExternalRiskEstimate, MSinceOldestTradeOpen, AverageMInFile, NumSatisfactoryTrades,
+		new_application = [ExternalRiskEstimate, MSinceOldestTradeOpen, AverageMInFile, NumSatisfactoryTrades,
 									NumTrades60Ever2DerogPubRec, NumTrades90Ever2DerogPubRec, PercentTradesNeverDelq,
 									MSinceMostRecentDelq, MaxDelq2PublicRecLast12M, MaxDelqEver, NumTotalTrades, 
 									NumTradesOpeninLast12M, PercentInstallTrades, MSinceMostRecentInqexcl7days, NumInqLast6M,
 									NumInqLast6Mexcl7days, NetFractionRevolvingBurden, NetFractionInstallBurden, 
 									NumRevolvingTradesWBalance, NumInstallTradesWBalance, NumInstallTradesWBalance,
-									NumBank2NatlTradesWHighUtilization, PercentTradesWBalance]])
+									NumBank2NatlTradesWHighUtilization, PercentTradesWBalance,0,0,0,0,0,0,0,0,0,0,0]
+
+		prediction = model.predict([new_application])
 	
-		st.write(prediction)
+		if prediction == 0:
+			st.success("This application should be accepted.")
+		else:
+			st.error("This application should be rejected.")
+
+	c1, c2, c3, c4, c5 = st.columns(5)
+
+	with c1:
+		st.write("[1]")
+		st.markdown("""
+					* Derogatory Comment = 0
+					* 120+ Days Delinquent = 1
+					* 90 Days Delinquent = 2
+					* 60 Days Delinquent =  3
+					* 30 Days Delinquent =  4
+					* Unknown Delinquency = 5 or 6
+					* Current and Never Delinquent = 7
+					* All Other = 8 or 9
+					""")
+	with c2:
+		st.write("[2]")
+		st.markdown("""
+					* No Such Value = 1
+					* Derogatory Comment = 2
+					* 120+ Days Delinquent = 3
+					* 90 Days Delinquent =  4
+					* 60 Days Delinquent =  5
+					* 30 Days Delinquent = 6
+					* Unknown Delinquency = 7
+					* Current and Never Delinquent = 8 
+					* All Other = 9
+					""")
 
 	
