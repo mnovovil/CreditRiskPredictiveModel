@@ -8,7 +8,7 @@ def page():
 	
 	st.markdown("<p style='text-align: center; color: white;'> (This form utilizes a Logistic Regression Model to make the prediction.) </p>", unsafe_allow_html=True)
 
-	with open('logistic_regression_model.p', 'rb') as f:
+	with open('../logistic_regression_model.p', 'rb') as f:
 		model = pickle.load(f)
 
 	df = pd.read_csv("heloc_dataset_v1.csv")
@@ -18,6 +18,7 @@ def page():
 		with c1:
 			ExternalRiskEstimate = st.number_input('External Risk Estimate', step = 1)
 			MSinceOldestTradeOpen = st.number_input('Months Since Oldest Trade Open', step = 1)
+			MSinceMostRecentTradeOpen = st.number_input('Months Since Recent Trade Open', step=1)
 			AverageMInFile = st.number_input('Average Months in File', step = 1)
 			NumSatisfactoryTrades = st.number_input('Number Satisfactory Trades', step = 1)
 			NumTrades60Ever2DerogPubRec = st.number_input('Number Trades 60+ Ever', step = 1)
@@ -43,20 +44,23 @@ def page():
 		submit = st.form_submit_button("Submit")
 
 	if submit:
-		new_application = [ExternalRiskEstimate, MSinceOldestTradeOpen, AverageMInFile, NumSatisfactoryTrades,
+		new_application = [ExternalRiskEstimate, MSinceOldestTradeOpen, MSinceMostRecentTradeOpen, AverageMInFile, NumSatisfactoryTrades,
 									NumTrades60Ever2DerogPubRec, NumTrades90Ever2DerogPubRec, PercentTradesNeverDelq,
 									MSinceMostRecentDelq, MaxDelq2PublicRecLast12M, MaxDelqEver, NumTotalTrades, 
 									NumTradesOpeninLast12M, PercentInstallTrades, MSinceMostRecentInqexcl7days, NumInqLast6M,
 									NumInqLast6Mexcl7days, NetFractionRevolvingBurden, NetFractionInstallBurden, 
-									NumRevolvingTradesWBalance, NumInstallTradesWBalance, NumInstallTradesWBalance,
+									NumRevolvingTradesWBalance, NumInstallTradesWBalance,
 									NumBank2NatlTradesWHighUtilization, PercentTradesWBalance,0,0,0,0,0,0,0,0,0,0,0]
 
 		prediction = model.predict([new_application])
+
 	
 		if prediction == 0:
 			st.success("This application should be accepted.")
 		else:
 			st.error("This application should be rejected.")
+		benchmarks_df = get_benchmarks(new_application, df)
+		st.write(benchmarks_df)
 
 	c1, c2, c3, c4, c5 = st.columns(5)
 
@@ -86,4 +90,48 @@ def page():
 					* All Other = 9
 					""")
 
-	
+
+
+def get_benchmarks(row, base_df):
+    # Get DataFrames of Good and Bad RiskPerformance
+    df_good = base_df[base_df['RiskPerformance'] == 'Good']
+    df_bad = base_df[base_df['RiskPerformance'] == 'Bad']
+
+    # Get descriptors of all DataFrames
+    df_good_desc = df_good.describe()
+    df_bad_desc = df_bad.describe()
+    df_desc = base_df.describe()
+
+
+    all_insights = {'ColName': [], 'Insight': [], 'Percentile': []}
+    for col_num in range(len(df_desc.columns)):
+        percentile = stats.percentileofscore(base_df[df_desc.columns[col_num]], row[col_num])
+        all_insights['ColName'].append(df_desc.columns[col_num])
+        all_insights['Percentile'].append(percentile)
+        if df_good_desc[df_desc.columns[col_num]]['mean'] >= df_bad_desc[df_desc.columns[col_num]]['mean']:
+            if percentile > 80:
+                all_insights['Insight'].append('Very Good')
+            elif percentile > 55:
+                all_insights['Insight'].append('Good')
+            elif percentile > 45:
+                all_insights['Insight'].append('Fair')
+            elif percentile > 20:
+                all_insights['Insight'].append('Poor')
+            else:
+                all_insights['Insight'].append('Very Poor')
+        else:
+            if percentile < 20:
+                all_insights['Insight'].append('Very Good')
+            elif percentile < 45:
+                all_insights['Insight'].append('Good')
+            elif percentile < 55:
+                all_insights['Insight'].append('Fair')
+            elif percentile < 80:
+                all_insights['Insight'].append('Poor')
+            else:
+                all_insights['Insight'].append('Very Poor')
+
+    insights_df = pd.DataFrame(all_insights)
+    insights_df = insights_df.set_index('ColName')
+
+    return insights_df
