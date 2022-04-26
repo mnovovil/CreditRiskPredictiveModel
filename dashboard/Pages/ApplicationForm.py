@@ -63,14 +63,7 @@ def page():
 			st.error("This application should be rejected.")
 		benchmarks_df = get_benchmarks(new_application, df)
 
-		c1, c2, c3, c4, c5 = st.columns(5)
-
-		with c1:
-			st.write(benchmarks_df.iloc[:9 , :])
-		with c2:
-			st.write(benchmarks_df.iloc[10:18 , :])
-		with c3:
-			st.write(benchmarks_df.iloc[19: , :])
+		st.write(benchmarks_df)
 
 
 	c1, c2, c3, c4, c5 = st.columns(5)
