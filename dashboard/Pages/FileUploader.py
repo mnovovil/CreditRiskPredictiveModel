@@ -25,10 +25,15 @@ def page():
 			
 		submit = st.form_submit_button("Submit")
 	if submit:
-		with open('../logistic_regression_model.p', 'rb') as f:
+		with open('logistic_regression_model.p', 'rb') as f:
 			model = pickle.load(f)
 		
 		y_pred = model.predict(dataframe)
 
-		st.write(y_pred)
-			
+		i = 1
+		for pred in y_pred:
+			if pred == 1:
+				st.write("Application " + str(i) + ": Reject") 
+			else:
+				st.write("Application " + str(i) + ": Accept") 
+			i += 1

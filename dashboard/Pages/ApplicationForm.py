@@ -10,7 +10,7 @@ def page():
 	
 	st.markdown("<p style='text-align: center; color: white;'> (This form utilizes a Logistic Regression Model to make the prediction.) </p>", unsafe_allow_html=True)
 
-	with open('../logistic_regression_model.p', 'rb') as f:
+	with open('logistic_regression_model.p', 'rb') as f:
 		model = pickle.load(f)
 
 	df = pd.read_csv("heloc_dataset_v1.csv")
@@ -52,7 +52,7 @@ def page():
 									NumTradesOpeninLast12M, PercentInstallTrades, MSinceMostRecentInqexcl7days, NumInqLast6M,
 									NumInqLast6Mexcl7days, NetFractionRevolvingBurden, NetFractionInstallBurden, 
 									NumRevolvingTradesWBalance, NumInstallTradesWBalance,
-									NumBank2NatlTradesWHighUtilization, PercentTradesWBalance,0,0,0,0,0,0,0,0,0,0,0]
+									NumBank2NatlTradesWHighUtilization, PercentTradesWBalance]
 
 		prediction = model.predict([new_application])
 
