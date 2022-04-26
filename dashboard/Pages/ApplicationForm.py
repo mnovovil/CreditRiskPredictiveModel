@@ -3,6 +3,8 @@ import pickle
 import pandas as pd
 import numpy as np
 
+from scipy import stats
+
 def page():
 	st.markdown("<h1 style='text-align: center; color: white;'> Application Form</h1>", unsafe_allow_html=True)
 	
@@ -60,7 +62,16 @@ def page():
 		else:
 			st.error("This application should be rejected.")
 		benchmarks_df = get_benchmarks(new_application, df)
-		st.write(benchmarks_df)
+
+		c1, c2, c3, c4, c5 = st.columns(5)
+
+		with c1:
+			st.write(benchmarks_df.iloc[:9 , :])
+		with c2:
+			st.write(benchmarks_df.iloc[10:18 , :])
+		with c3:
+			st.write(benchmarks_df.iloc[19: , :])
+
 
 	c1, c2, c3, c4, c5 = st.columns(5)
 
