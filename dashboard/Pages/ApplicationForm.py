@@ -115,9 +115,9 @@ def get_benchmarks(row, base_df):
         if df_good_desc[df_desc.columns[col_num]]['mean'] >= df_bad_desc[df_desc.columns[col_num]]['mean']:
             if percentile > 80:
                 all_insights['Insight'].append('Very Good')
-            elif percentile > 55:
+            elif percentile > 40:
                 all_insights['Insight'].append('Good')
-            elif percentile > 45:
+            elif percentile > 30:
                 all_insights['Insight'].append('Fair')
             elif percentile > 20:
                 all_insights['Insight'].append('Poor')
@@ -126,9 +126,9 @@ def get_benchmarks(row, base_df):
         else:
             if percentile < 20:
                 all_insights['Insight'].append('Very Good')
-            elif percentile < 45:
+            elif percentile < 30:
                 all_insights['Insight'].append('Good')
-            elif percentile < 55:
+            elif percentile < 40:
                 all_insights['Insight'].append('Fair')
             elif percentile < 80:
                 all_insights['Insight'].append('Poor')
@@ -137,5 +137,10 @@ def get_benchmarks(row, base_df):
 
     insights_df = pd.DataFrame(all_insights)
     insights_df = insights_df.set_index('ColName')
+    new_insights_df = insights_df.drop(['MaxDelqEver', 'AverageMInFile', 'NumSatisfactoryTrades', 'PercentTradesNeverDelq',
+					  'MSinceMostRecentDelq', 'PercentTradesWBalance', 'NumInstallTradesWBalance', 'NumTotalTrades',
+					  'MSinceOldestTradeOpen', 'NetFractionInstallBurden', 'MSinceMostRecentTradeOpen',
+					  'NetFractionRevolvingBurden', 'NumTradesOpeninLast12M', 'PercentInstallTrades'], axis=0)
 
-    return insights_df
+
+    return new_insights_df
