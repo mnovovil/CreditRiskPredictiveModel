@@ -10,11 +10,20 @@ def img_to_bytes(img_path):
     return encoded
 
 def page():
-	st.image("https://emojigraph.org/media/messenger/house_1f3e0.png", width = 50)
+	st.markdown(
+		"""
+		<style>
+		.img{
+			width:50px;
+			height:50px;
+		}
+		</style>
+		""",
+		unsafe_allow_html=True
+	)
 
-	st.markdown("<h1 style='text-align: center; color: white;'>Home Equity Line of Credit (HELOC) Application Evaluation</h1>", unsafe_allow_html=True)
+	st.markdown("<h1 style='text-align: center; color: white;'><img class='img' src='https://emojigraph.org/media/messenger/house_1f3e0.png'/> Home Equity Line of Credit (HELOC) Application Evaluation </h1>", unsafe_allow_html=True)
 
-	st.markdown("<h3 style='text-align: center; color: white;'>Home Equity Line of Credit (HELOC) \
-				Using this dashboard, you can identify whether to accept or reject HELOC applications.</h3>", unsafe_allow_html=True)
+	st.markdown("<h3 style='text-align: center; color: white;'> Using this dashboard, you can identify whether to accept or reject HELOC applications.</h3>", unsafe_allow_html=True)
 
 	st.markdown("""---""")
