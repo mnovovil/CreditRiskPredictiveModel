@@ -5,7 +5,27 @@ import streamlit as st
 import pickle
 
 def page():
-	st.title('File Upload')
+
+	st.markdown(
+		"""
+		<style>
+		.img{
+			width:50px;
+			height:50px;
+		}
+		</style>
+		""",
+		unsafe_allow_html=True
+	)
+
+	st.markdown(
+		f"""
+		<div>
+			<h1><img class="img" src="https://cdn-icons-png.flaticon.com/512/180/180855.png"/> File Upload </h1>
+		</div>
+		""",
+		unsafe_allow_html=True
+	)
 	st.write('Upload your file below pretty please with a cherry on top.')
 
 	with st.form("File Upload"):

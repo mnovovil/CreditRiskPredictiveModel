@@ -6,10 +6,28 @@ import numpy as np
 from scipy import stats
 
 def page():
-	st.markdown("<h1 style='text-align: center; color: white;'> Application Form</h1>", unsafe_allow_html=True)
-	
-	st.markdown("<p style='text-align: center; color: white;'> (This form utilizes a Logistic Regression Model to make the prediction.) </p>", unsafe_allow_html=True)
 
+	st.markdown(
+		"""
+		<style>
+		.img{
+			width:50px;
+			height:50px;
+		}
+		</style>
+		""",
+		unsafe_allow_html=True
+	)
+
+	st.markdown(
+		f"""
+		<div>
+			<h1><img class="img" src="https://cdn-icons-png.flaticon.com/512/2891/2891711.png" alt="logo"/> Application Form</h1>
+		</div>
+		""",
+		unsafe_allow_html=True
+	)
+	
 	with open('logistic_regression_model.p', 'rb') as f:
 		model = pickle.load(f)
 
@@ -27,15 +45,15 @@ def page():
 			NumTrades90Ever2DerogPubRec = st.number_input('Number Trades 90+ Ever', step = 1)
 			PercentTradesNeverDelq = st.number_input('Percent Trades Never Delinquent', step = 1)
 			MSinceMostRecentDelq = st.number_input('Months Since Most Recent Delinquency', step = 1)
-			MaxDelq2PublicRecLast12M = st.number_input('Max Delq/Public Records Last 12 Months [1]', step = 1)
-			MaxDelqEver = st.number_input('Max Delinquency Ever [2]', step = 1)
+			MaxDelq2PublicRecLast12M = st.number_input('Max Delinquency/Public Records Last 12 Months', step = 1)
+			MaxDelqEver = st.number_input('Max Delinquency Ever', step = 1)
 			NumTotalTrades = st.number_input('Number of Total Trades (total number of credit accounts)', step = 1)
 		with c2:
 			NumTradesOpeninLast12M = st.number_input('Number of Trades Open in Last 12 Months', step = 1)
 			PercentInstallTrades = st.number_input('Percent Installment Trades', step = 1)
-			MSinceMostRecentInqexcl7days = st.number_input('Months Since Most Recent Inq excl 7days', step = 1)
-			NumInqLast6M = st.number_input('Number of Inq Last 6 Months', step = 1)
-			NumInqLast6Mexcl7days = st.number_input('Number of Inq Last 6 Months excl 7days. Excluding the last 7 days removes inquiries that are likely due to price comparision shopping.', step = 1)
+			MSinceMostRecentInqexcl7days = st.number_input('Months Since Most Recent inquiries excluding last 7 days', step = 1)
+			NumInqLast6M = st.number_input('Number of inquiries Last 6 Months', step = 1)
+			NumInqLast6Mexcl7days = st.number_input('Number of inquiries Last 6 Months excluding the last 7 days. Excluding the last 7 days removes inquiries that are likely due to price comparision shopping.', step = 1)
 			NetFractionRevolvingBurden = st.number_input('Net Fraction Revolving Burden. This is revolving balance divided by credit limit', step = 1)
 			NetFractionInstallBurden = st.number_input('Net Fraction Installment Burden. This is installment balance divided by original loan amount', step = 1)
 			NumRevolvingTradesWBalance = st.number_input('Number Revolving Trades with Balance', step = 1)
@@ -63,36 +81,9 @@ def page():
 			st.error("This application should be rejected.")
 		benchmarks_df = get_benchmarks(new_application, df)
 
+		st.write("")
+		st.write("Application Evaluation: ")
 		st.write(benchmarks_df)
-
-
-	c1, c2, c3, c4, c5 = st.columns(5)
-
-	with c1:
-		st.write("[1]")
-		st.markdown("""
-					* Derogatory Comment = 0
-					* 120+ Days Delinquent = 1
-					* 90 Days Delinquent = 2
-					* 60 Days Delinquent =  3
-					* 30 Days Delinquent =  4
-					* Unknown Delinquency = 5 or 6
-					* Current and Never Delinquent = 7
-					* All Other = 8 or 9
-					""")
-	with c2:
-		st.write("[2]")
-		st.markdown("""
-					* No Such Value = 1
-					* Derogatory Comment = 2
-					* 120+ Days Delinquent = 3
-					* 90 Days Delinquent =  4
-					* 60 Days Delinquent =  5
-					* 30 Days Delinquent = 6
-					* Unknown Delinquency = 7
-					* Current and Never Delinquent = 8 
-					* All Other = 9
-					""")
 
 
 
