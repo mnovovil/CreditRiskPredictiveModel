@@ -12,4 +12,5 @@ Dashboard1
 <img src="https://github.com/mnovovil/CreditRiskPredictiveModel/blob/main/Dashboard1.png" width="75%" height="75%">
 
 Dashboard2
+
 <img src="https://github.com/mnovovil/CreditRiskPredictiveModel/blob/main/Dashboard2.png" width="75%" height="75%">
