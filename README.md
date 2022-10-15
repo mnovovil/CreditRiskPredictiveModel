@@ -7,10 +7,9 @@ The selected model is Logistic Regression (0.725 Train Acc, 0.718 Validation Acc
 The following repository contains the data, code (Jupyter Notebook and Interactive Dashboard) and report.
 
 
-DSaS Content
+Dashboard1
 
-<img src="https://github.com/mnovovil/CreditRiskPredictiveModel/blob/main/Dashboard1.png" width="50%" height="50%">
+<img src="https://github.com/mnovovil/CreditRiskPredictiveModel/blob/main/Dashboard1.png" width="75%" height="75%">
 
-Output
-
-![alt text](https://github.com/mnovovil/CreditRiskPredictiveModel/blob/main/Dashboard2.png)
+Dashboard2
+<img src="https://github.com/mnovovil/CreditRiskPredictiveModel/blob/main/Dashboard2.png" width="75%" height="75%">
