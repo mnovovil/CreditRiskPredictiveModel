@@ -1,3 +1,7 @@
-# CIS432_credit_risk_pred_model
-The following repository contains the data and code for the final project of predictive business analytics with python. 
-A dashboard was implemented in the HELOC dataset (CSV included) using a logistic regression model to classify credit risk as good or bad based on different parameters.
+# Credit Risk Predictive Model
+A dashboard was implemented in the HELOC dataset (CSV included) using a logistic regression model to classify credit risk.
+
+Different models were tested: Decision Tree, k-nn, Gradient Boosting and Logistic Regression.
+The selected model is Logistic Regression (0.725 Train Acc, 0.718 Validation Acc, 0.725 CV Acc) due to computational cost and simplicity to explain to a non technical third party.
+
+The following repository contains the data, code (Jupyter Notebook and Interactive Dashboard) and report.
